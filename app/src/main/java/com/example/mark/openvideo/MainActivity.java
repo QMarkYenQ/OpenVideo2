@@ -22,24 +22,26 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
     //A Tag to filter the log messages
     private static final String TAG = ":Activity";
     //A class used to implement the interaction between OpenCV and the
-//device camera.
 
     myNDK jnifunc = new myNDK();
 
-    private CameraBridgeViewBase mOpenCvCameraView =null;
+   // private Tutorial3View mOpenCvCameraView;
+   private CameraBridgeViewBase mOpenCvCameraView;
 
 
+   // private CameraBridgeViewBase mOpenCvCameraView = null;
     private BaseLoaderCallback opencvLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
 
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS:
-                {
+
                     Log.d(TAG, "Loaded OpenCV successfully");
+
                     // Init camera and start preview.
                     mOpenCvCameraView.enableView();
-                } break;
+                break;
 
                 default:
                     super.onManagerConnected(status);
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.cameraview);
         mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
         mOpenCvCameraView.setCvCameraViewListener(this);
@@ -63,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements CvCameraViewListe
 
         // Load the OpenCV library asynchronously. The callback object
         // opencvLoaderCallback will be notified when this is complete.
-       OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, opencvLoaderCallback);
+        OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, opencvLoaderCallback);
 
-        jnifunc.iniProcess(0);
+       // jnifunc.iniProcess(0);
 
     }
 

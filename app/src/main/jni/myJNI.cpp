@@ -188,38 +188,35 @@ img = ReadImage( frame );
 
 JNIEXPORT jint JNICALL Java_com_example_mark_openvideo_myNDK_MSR_1original
     (JNIEnv *, jobject, jlong, jlong myImg){
-
     //-- Get a frame from the capture
-    Mat* myrgba = (Mat*) myImg; // WT
+    Mat* myrgba = (Mat*) myImg;
     //-- Frame Captured from capture object
     Mat frame;
-    cvtColor( *myrgba, frame, CV_RGBA2RGB );
-	cv::resize( frame, frame, Size( 480 ,320 ), 0, 0, INTER_LINEAR );  // WT
-
-    //int fheight    = frame.size().height;
-    //int fwidth     = frame.size().width;
-    //cv::Rect myROI(fwidth*0, fheight*0, fwidth/2, fheight);
-    //Mat frame2 = frame(myROI);
-    //frame = frame2;
+    if( myrgba->rows >640 || myrgba->cols> 480){
+        cv::resize( *myrgba, frame, Size( 1280 ,960 ), 0, 0, INTER_NEAREST );  // WT
+        cv::pyrDown( frame, frame,  Size( 640, 480 ));
+    }else{
+        cv::resize( *myrgba, frame, Size( 640 ,480 ), 0, 0, INTER_LINEAR );  // WT
+    }
     LOGD( "resizeFrame, rows =  %d,  cols = %d, channels = %d, depth = %d",
             frame.rows,frame.cols,frame.channels(),frame.depth());
-
-         guchar *src = frame.ptr<uchar>(0);
-         gint width  = frame.cols;
-         gint height = frame.rows;
-         gint bytes =3;
-         gboolean preview_mode =0 ;
-
-         MSRCR( src,
-                width,height,
-                bytes
-                );
-	//free_img.convertTo(free_img,CV_8U,255.0,0.0);
-    cvtColor( frame, frame, CV_RGB2RGBA );
+    guchar *src = frame.ptr<uchar>(0);
+    gint width  = frame.cols;
+    gint height = frame.rows;
+    gint bytes = 4;
+    MSRCP( src, width, height, bytes, 2.3 );
     cv::resize( frame, *myrgba, myrgba->size(), 0, 0, INTER_LINEAR);
-    //
 	LOGD( "free_img, rows =  %d,  cols = %d, channels = %d, depth = %d",
          myrgba->rows, myrgba->cols, myrgba->channels(), myrgba->depth());
-
     return 0;
+        //cvtColor( *myrgba, frame, CV_RGBA2RGB );
+    	//cv::resize( *myrgba, frame, Size( 320 ,240 ), 0, 0, INTER_LINEAR );  // WT
+        //INTER_NEAREST , INTER_LINEAR and INTER_CUBIC
+        //int fheight    = frame.size().height;
+        //int fwidth     = frame.size().width;
+        //cv::Rect myROI(fwidth*0, fheight*0, fwidth/2, fheight);
+        //Mat frame2 = frame(myROI);
+        //frame = frame2;
+    	//free_img.convertTo(free_img,CV_8U,255.0,0.0);
+        //cvtColor( frame, frame, CV_RGB2RGBA );
   }

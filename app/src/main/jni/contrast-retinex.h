@@ -8,33 +8,37 @@ extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <time.h>
+//
+#include <opencv2/core/core_c.h>
+#include <opencv2/imgproc/imgproc_c.h>
 
-/*  Provide type definitions for commonly used types.
- *  These are useful because a "gint8" can be adjusted
- *  to be 1 byte (8 bits) on all platforms. Similarly and
- *  more importantly, "gint32" can be adjusted to be
- *  4 bytes (32 bits) on all platforms.
- */
-typedef char   gchar;
-typedef short  gshort;
-typedef long   glong;
-typedef int    gint;
-typedef gint   gboolean;
-typedef unsigned char   guchar;
-typedef unsigned short  gushort;
-typedef unsigned long   gulong;
-typedef unsigned int    guint;
-typedef float   gfloat;
-typedef double  gdouble;
-/*
- * MSRCR = MultiScale Retinex with Color Restoration
- */
-void MSRCR (
-    guchar *src,
-    gint width,
-    gint height,
-    gint bytes
-);
+
+typedef char gchar;
+typedef short gshort;
+typedef long glong;
+typedef int gint;
+typedef gint gboolean;
+typedef unsigned char guchar;
+typedef unsigned short gushort;
+typedef unsigned long gulong;
+typedef unsigned int guint;
+typedef float gfloat;
+typedef double gdouble;
+
+
+//==========================================================
+// src = RGB  image, gint bytes = 3
+// src = RGBA image, gint bytes = 4
+//----------------------------------------------------------
+// MSRCP = MultiScale Retinex with Chromaticity Preservation
+//
+void MSRCP( guchar *src, gint width, gint height, gint bytes, gfloat cvar );
+//----------------------------------------------------------
+// GLAY_BLUR
+//
+void GLAY_BLUR( guchar *src, gint width, gint height, gint bytes, gfloat segma );
+//==========================================================
 #ifdef __cplusplus
 }
 #endif

@@ -26,10 +26,12 @@ import android.view.SurfaceView;
  * frame to the screen.
  * The clients shall implement CvCameraViewListener.
  */
-public abstract class CameraBridgeViewBase extends SurfaceView implements SurfaceHolder.Callback {
+
+public abstract class CameraBridgeViewBase extends SurfaceView implements SurfaceHolder.Callback
+{
 
     private static final String TAG = "CameraBridge";
-    private static final int MAX_UNSPECIFIED = -1;
+    private static final int MAX_UNSPECIFIED = 1;
     private static final int STOPPED = 0;
     private static final int STARTED = 1;
 
